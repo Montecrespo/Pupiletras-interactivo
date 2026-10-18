@@ -1,0 +1,17 @@
+{
+  "name": "Sopa de Letras Interactiva Escolar",
+  "short_name": "SopaLetras",
+  "description": "Busca palabras de forma divertida en un tablero aleatorio y responsivo.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fffae6",
+  "theme_color": "#009688",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "imagen/MapaPeru.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

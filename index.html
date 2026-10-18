@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+  <title>Sopa de Letras Interactiva Escolar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Canvas independiente para el Confeti de Victoria -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="game-container">
+    <div class="top-bar">
+      <div class="title-badge">✏️ Sopa de Letras</div>
+      <!-- NUEVO: Temporizador visual -->
+      <div class="timer-box">⏱️ Tiempo: <span id="timeCount">00:00</span></div>
+      <button id="restartBtn" class="restart-btn">🔄 Reiniciar</button>
+      <!-- <button id="restartBtn" class="restart-btn">🔄 Iniciar</button> -->
+    </div>
+
+    <h1 class="instruction">🔍 Encuentra las palabras deslizando el mouse o tu dedo</h1>
+
+    <div id="wordSearchBoard" class="board"></div>
+
+    <div class="word-list-container">
+      <h3>📋 Lista de Palabras:</h3>
+      <ul id="wordList" class="word-list"></ul>
+    </div>
+
+    <!-- Pantalla de Victoria Escolar con tiempo final -->
+    <div id="victoryScreen" class="victory-overlay" style="display: none;">
+      <div class="victory-card">
+        <div class="victory-icon">🏆</div>
+        <h2>¡Excelente Trabajo! 🎉</h2>
+        <p>Has encontrado todas las palabras con éxito.</p>
+        <!-- NUEVO: Indicador de tiempo demorado -->
+        <div class="final-time-box">⏱️ Te demoraste: <span id="finalTime">00:00</span></div>
+        <button id="playAgainBtn" class="action-btn">¡Jugar de Nuevo! 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
