@@ -46,7 +46,6 @@ window.addEventListener('resize', ajustarCanvasConfeti);
 ajustarCanvasConfeti();
 
 function iniciarJuego() {
-  // CORREGIDO: Resetear variables lógicas a sus estados por defecto de forma estricta
   tableroMatriz = Array(FILAS).fill(null).map(() => Array(COLUMNAS).fill('.'));
   palabrasActivas = [...PALABRAS_ORIGINALES];
   celdasSeleccionadas = [];
@@ -57,7 +56,6 @@ function iniciarJuego() {
   lanzarConfeti = false;
   confetis = [];
   
-  // Limpiar UI y detener animaciones previas de forma limpia
   boardEl.innerHTML = '';
   wordListEl.innerHTML = '';
   victoryScreen.style.display = 'none';
@@ -108,14 +106,17 @@ function iniciarJuego() {
       cellDiv.dataset.row = f;
       cellDiv.dataset.col = c;
       
+      // Evento de inicio compatible con mouse y pantallas táctiles
       cellDiv.addEventListener('pointerdown', iniciarSeleccion);
-      cellDiv.addEventListener('pointerenter', continuarSeleccion);
       
       boardEl.appendChild(cellDiv);
     }
   }
 
-  // CORREGIDO: Evitar la acumulación de listeners duplicados globales al reiniciar
+  // CORREGIDO: Manejo del arrastre global mediante rastreo del puntero (dedo/mouse)
+  document.removeEventListener('pointermove', procesarArrastreGlobal);
+  document.addEventListener('pointermove', procesarArrastreGlobal);
+  
   document.removeEventListener('pointerup', terminarSeleccion);
   document.addEventListener('pointerup', terminarSeleccion);
 
@@ -148,12 +149,7 @@ function validarEspacioPalabra(palabra, f, c, dF, dC) {
   return true;
 }
 
-function colocarPalabraEnMatriz(palabra, f, c, dF, dC) {
-  for (let i = 0; i < palabra.length; i++) {
-    tableroMatriz[f + i * dF][c + i * dC] = palabra[i];
-  }
-}
-
+// Intercepciones lúdicas Pointer
 function iniciarSeleccion(e) {
   e.preventDefault();
   estaSeleccionando = true;
@@ -162,35 +158,37 @@ function iniciarSeleccion(e) {
   celdaInicio.classList.add('selecting');
 }
 
-function continuarSeleccion(e) {
+// NUEVO: Función de rastreo por radar de punto para soportar el deslizamiento del dedo en móviles
+function procesarArrastreGlobal(e) {
   if (!estaSeleccionando || !celdaInicio) return;
-  const celdaActual = e.target;
   
-  if (celdaActual.classList.contains('cell')) {
-    const fStart = parseInt(celdaInicio.dataset.row);
-    const cStart = parseInt(celdaInicio.dataset.col);
-    const fCurrent = parseInt(celdaActual.dataset.row);
-    const cCurrent = parseInt(celdaActual.dataset.col);
+  // Detecta el elemento real que está debajo del dedo o mouse en este milisegundo
+  const elementoBajoPuntero = document.elementFromPoint(e.clientX, e.clientY);
+  if (!elementoBajoPuntero || !elementoBajoPuntero.classList.contains('cell')) return;
 
-    const dF = Math.sign(fCurrent - fStart);
-    const dC = Math.sign(cCurrent - cStart);
+  const fStart = parseInt(celdaInicio.dataset.row);
+  const cStart = parseInt(celdaInicio.dataset.col);
+  const fCurrent = parseInt(elementoBajoPuntero.dataset.row);
+  const cCurrent = parseInt(elementoBajoPuntero.dataset.col);
 
-    if (dF === 0 || dC === 0 || Math.abs(fCurrent - fStart) === Math.abs(cCurrent - cStart)) {
-      document.querySelectorAll('.cell.selecting').forEach(c => c.classList.remove('selecting'));
-      celdasSeleccionadas = [];
+  const dF = Math.sign(fCurrent - fStart);
+  const dC = Math.sign(cCurrent - cStart);
 
-      let f = fStart;
-      let c = cStart;
-      while (f !== fCurrent + dF || c !== cCurrent + dC) {
-        const celdaLinea = document.querySelector(`.cell[data-row='${f}'][data-col='${c}']`);
-        if (celdaLinea) {
-          celdaLinea.classList.add('selecting');
-          celdasSeleccionadas.push(celdaLinea);
-        }
-        if (f === fCurrent && c === cCurrent) break;
-        f += dF;
-        c += dC;
+  if (dF === 0 || dC === 0 || Math.abs(fCurrent - fStart) === Math.abs(cCurrent - cStart)) {
+    document.querySelectorAll('.cell.selecting').forEach(c => c.classList.remove('selecting'));
+    celdasSeleccionadas = [];
+
+    let f = fStart;
+    let c = cStart;
+    while (f !== fCurrent + dF || c !== cCurrent + dC) {
+      const celdaLinea = document.querySelector(`.cell[data-row='${f}'][data-col='${c}']`);
+      if (celdaLinea) {
+        celdaLinea.classList.add('selecting');
+        celdasSeleccionadas.push(celdaLinea);
       }
+      if (f === fCurrent && c === cCurrent) break;
+      f += dF;
+      c += dC;
     }
   }
 }
@@ -250,6 +248,12 @@ function terminarSeleccion() {
   celdaInicio = null;
 }
 
+function colocarPalabraEnMatriz(palabra, f, c, dF, dC) {
+  for (let i = 0; i < palabra.length; i++) {
+    tableroMatriz[f + i * dF][c + i * dC] = palabra[i];
+  }
+}
+
 class ConfettiParticle {
   constructor() {
     this.x = Math.random() * confettiCanvas.width;
@@ -293,7 +297,6 @@ function animarConfeti() {
   animacionConfetiId = requestAnimationFrame(animarConfeti);
 }
 
-// CORREGIDO: Escuchadores vinculados de forma definitiva para un correcto reciclaje del juego
 restartBtn.addEventListener('click', iniciarJuego);
 playAgainBtn.addEventListener('click', iniciarJuego);
 
