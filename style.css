@@ -10,7 +10,6 @@ body {
   box-sizing: border-box;
 }
 
-/* NUEVO: Canvas de confeti flotante sobre todo el juego */
 #confettiCanvas {
   position: fixed;
   top: 0;
@@ -88,12 +87,12 @@ body {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(13, 1fr);
   gap: 5px;
-  background-color: #e0f2f1;
+  background-color: #f2e8e0;
   padding: 8px;
   border-radius: 15px;
-  border: 4px dashed #009688;
+  border: 2px dashed #009688;
   margin: 0 auto 20px auto;
   aspect-ratio: 1 / 1;
   width: 100%;
@@ -108,12 +107,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+  font-size: clamp(1.1rem, 4.5vw, 1rem);
   color: #37474f;
   font-weight: bold;
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 3px 0 #b2dfdb;
+  box-shadow: 0 3px 0 #b2dfdb; 
   border: 1px solid #e0f2f1;
   box-sizing: border-box;
   position: relative;
@@ -125,6 +124,9 @@ body {
   color: #000000 !important;
 }
 
+footer {
+  font-size: 0.85rem;
+}
 .cell-overlay {
   position: absolute;
   top: 2px; left: 2px; right: 2px; bottom: 2px;
@@ -178,7 +180,7 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-/* NUEVO: Caja de tiempo en la tarjeta de victoria */
+
 .final-time-box {
   font-size: 1.3rem;
   font-weight: bold;
