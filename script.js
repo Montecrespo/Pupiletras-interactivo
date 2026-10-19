@@ -1,6 +1,6 @@
-const PALABRAS_ORIGINALES = ["PERU", "LIMA", "MAPA", "COSTA", "SIERRA", "SELVA"];
-const FILAS = 10;
-const COLUMNAS = 10;
+const PALABRAS_ORIGINALES = ["ALBERT", "EINSTEN", "RELATIVIDAD", "MASA", "ENERGIA", "GRAVITATORIA","ESPACIO","TIEMPO","VELOCIDAD","LUZ","GRAVEDAD"];
+const FILAS = 13;
+const COLUMNAS = 13;
 
 const COLORES_PALABRAS = [
   "rgba(255, 68, 68, 0.35)",
@@ -8,7 +8,12 @@ const COLORES_PALABRAS = [
   "rgba(76, 175, 80, 0.35)",
   "rgba(255, 152, 0, 0.35)",
   "rgba(156, 39, 176, 0.35)",
-  "rgba(233, 30, 99, 0.35)"
+  "rgba(233, 30, 99, 0.35)",
+  "rgba(50, 225, 255, 0.35)",
+  "rgba(249, 115, 22, 0.35)",
+  "rgba(37, 99, 235, 0.35)",
+  "rgba(139, 92, 246, 0.35)",
+  "rgba(82,250,92,0.35)"
 ];
 
 const sonidoExito = new Audio('sonidos/exito.mp3');
@@ -113,7 +118,7 @@ function iniciarJuego() {
     }
   }
 
-  // CORREGIDO: Manejo del arrastre global mediante rastreo del puntero (dedo/mouse)
+  // Manejo del arrastre global mediante rastreo del puntero (dedo/mouse)
   document.removeEventListener('pointermove', procesarArrastreGlobal);
   document.addEventListener('pointermove', procesarArrastreGlobal);
   
